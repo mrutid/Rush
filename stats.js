@@ -1,5 +1,5 @@
 var http = require('http');
-var logger = require('./logger.js');
+var config = require('./config_base.js').stats;
 
 stats = {};
 
@@ -21,11 +21,6 @@ function get(key) {
     return stats[key];
 }
 
-function get_all() {
-    return stats;
-}
-
-
 function stats_response(req, res) {
 
     var data;
@@ -44,7 +39,7 @@ function stats_response(req, res) {
 }
 
 var server = http.createServer(stats_response);
-server.listen(3080);
+server.listen(config.PORT);
 
 exports.set = set;
 exports.inc = inc;

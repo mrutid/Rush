@@ -4,7 +4,12 @@ var router = require('./service_router');
 var store = require('./task_queue.js');
 var logger = require('./logger.js');
 
+
+var stats = require("./stats");
+
 var n = 0;
+
+stats.set('/peticiones', 0);
 
 
 var server = http.createServer(
@@ -28,6 +33,9 @@ var server = http.createServer(
                 res.end(result.data);
             });
         });
+
+        stats.inc('/peticiones', 1);
+		
     }).listen(8030);
 
 
