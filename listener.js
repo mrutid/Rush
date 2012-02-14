@@ -9,7 +9,8 @@ var stats = require("./stats");
 
 var n = 0;
 
-stats.set('/peticiones', 0);
+stats.set('/requests', 0);
+stats.set('/error_requests', 0);
 
 
 var server = http.createServer(
@@ -34,7 +35,7 @@ var server = http.createServer(
             });
         });
 
-        stats.inc('/peticiones', 1);
+        stats.inc('/requests');
 		
     }).listen(8030);
 
@@ -65,6 +66,7 @@ function assign_request(request, data, callback) {
                         response.statusCode(500);
                         response.data = error.toString();
                         logger.info('response',response);
+						stats.inc('/error_requests');
 
                     }
                     else {
@@ -81,6 +83,7 @@ function assign_request(request, data, callback) {
             response.statusCode = 404;
             response.data = target.message;
             logger.info('response',response);
+			stats.inc('/error_requests');
             callback(response);
         }
 }

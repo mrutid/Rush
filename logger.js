@@ -22,19 +22,14 @@ var BUFFER_SIZE = config.BUFFER_SIZE;
 var logBuffer = Array();
 var iLogBuffer = 0;
 
-
-//TODO: save an object, don't stringify here
 function log(loglevel, msg, obj) {
-    var obj_str;
 	var now = new Date();
 	
 	if (level >= loglevel) {
         console.log(msg);
         if (obj) {
-			obj_str = JSON.stringify(obj);
             console.dir(obj);
-			msg += " " + obj_str;
-			logBuffer[iLogBuffer] = now.toISOString()+ ' ' + msg;
+			logBuffer[iLogBuffer] = [now,  msg, obj];
 			iLogBuffer = (iLogBuffer + 1) % BUFFER_SIZE;
 		}
     }
@@ -57,14 +52,9 @@ function logs_response(req, res) {
 	var i;
 	
     req.on('end', function () {
-	    for( i = iLogBuffer + 1; i <  BUFFER_SIZE && logBuffer[i]; ++i) {
-			str_data += '<li>'+logBuffer[i]+ '</li>';
-		}
-		for( i = 0; i <  iLogBuffer; ++i) {
-			str_data += '<li>'+logBuffer[i]+ '</li>';
-		}
-        res.writeHead(200, {'content-type' : 'text/html'});
-        res.end(""+str_data);
+		str_data = JSON.stringify(logBuffer);
+        res.writeHead(200, {'content-type' : 'application/json'});
+        res.end(str_data);
     });
 }
 

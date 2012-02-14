@@ -11,6 +11,7 @@ function set(key, value) {
 
 function inc(key, value) {
 	var d = new Date();
+	value = value === undefined ? 1 : value;
 	stats[key][0] += value;
 	stats[key][1] = d;
 }
@@ -35,7 +36,7 @@ function stats_response(req, res) {
             data = stats[req.url];
         }
         str_data = JSON.stringify(data);
-        res.writeHead(200);
+        res.writeHead(200, {'content-type': 'application/json'});
         res.end(""+str_data);
     });
 }
