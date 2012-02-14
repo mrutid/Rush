@@ -5,16 +5,18 @@ stats = {};
 
 
 function set(key, value) {
-    stats[key] = value;
+	var d = new Date();
+    stats[key] = [value, d];
 }
 
 function inc(key, value) {
-    stats[key] += value;
+	var d = new Date();
+	stats[key][0] += value;
+	stats[key][1] = d;
 }
 
 function del(key) {
-    del
-    stats[key];
+    delete stats[key];
 }
 
 function get(key) {
