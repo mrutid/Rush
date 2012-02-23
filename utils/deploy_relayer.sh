@@ -12,6 +12,7 @@ then
 	rm -f $TAG
 	wget --no-check-certificate https://github.com/mrutid/Rush/zipball/$TAG
 	unzip -d BRANCH -u $TAG
+	NODE_DIR=`ls BRANCH` 
 	pushd BRANCH/${NODE_DIR}
 	if [ -f package.json ]; then
 		npm install
