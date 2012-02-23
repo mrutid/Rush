@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 set -e
 TAG=$1
 SCRPT=$2
@@ -33,7 +33,11 @@ fi
 rm ${SCRPT}.pid
 fi
 pushd BRANCH/${NODE_DIR}
-nohup node ${SCRPT} </dev/null  >${SCRPT}.out  2>&1 &
+nohup node ${SCRPT} </dev/null  >${SCRPT}.out 2>&1   &
+#Noooo!
+sleep 3
+
+cat ${SCRPT}.out
 SPID=$!
 popd
 #ps -fp  $SPID
